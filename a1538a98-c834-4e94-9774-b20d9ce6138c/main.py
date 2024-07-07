@@ -5,10 +5,10 @@ from surmount.logging import log
 
 class TradingStrategy(Strategy):
     def __init__(self):
-        # Trading only AAPL for simplicity
-        self.tickers = ["AAPL"]
+        # Trading only GME for simplicity
+        self.tickers = ["GME"]
         # Instantiating GDP data
-        self.data_list = [GDPAllCountries(), InsiderTrading("AAPL")]
+        self.data_list = [GDPAllCountries(), InsiderTrading("GME")]
     
     @property
     def interval(self):
@@ -27,7 +27,7 @@ class TradingStrategy(Strategy):
     
     def run(self, data):
         # Default to no position
-        allocation_dict = {"AAPL": 0}
+        allocation_dict = {"GME": 0}
         
         # Check the latest GDP data to ensure positive economic growth
         gdp_data = data[("gdp_by_country",)]
@@ -35,10 +35,10 @@ class TradingStrategy(Strategy):
             latest_gdp = gdp_data[-1]  # Assuming the latest data point is last in the list
             if latest_gdp["country"] == "United States" and latest_gdp["value"] > 0:
                 # Economic condition is positive; now let's check the technical condition
-                rsi = RSDOI("AAPL", data["ohlcv"], 14)  # 14-day RSI for AAPL
+                rsi = RSDOI("GME", data["ohlcv"], 14)  # 14-day RSI for GME
                 if rsi and rsi[-1] < 30:
                     # RSI indicates AAPL is potentially oversold; setting buy allocation
-                    allocation_dict["AAPL"] = 1  # Allocating fully into AAPL
+                    allocation_dict["GME"] = 1  # Allocating fully into GME
                     
         # Return the target allocation based on the strategy's logic
         return TargetAllocation(allocation estion_dict)
